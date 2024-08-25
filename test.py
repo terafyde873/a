@@ -1,6 +1,14 @@
 import os
+import torch
 from datasets import load_dataset
 from transformers import AutoTokenizer, DataCollatorForLanguageModeling, AutoModelForCausalLM, Trainer, TrainingArguments
+
+# Set environment variables for multi-core processing
+os.environ["OMP_NUM_THREADS"] = "4"  # Adjust according to the number of CPU cores
+os.environ["MKL_NUM_THREADS"] = "4"  # Adjust according to the number of CPU cores
+
+# Set PyTorch to use all available cores
+torch.set_num_threads(int(os.environ.get("OMP_NUM_THREADS", 1)))
 
 # Define the path to the JSONL file
 data_file = "mbpp.jsonl"
@@ -56,7 +64,7 @@ training_args = TrainingArguments(
     logging_first_step=True,
     load_best_model_at_end=True,
     warmup_steps=500,
-    fp16=True,
+    fp16=True,  # Ensure GPU support; set to False if not using GPU
     report_to="none",
 )
 
