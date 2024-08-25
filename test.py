@@ -2,16 +2,11 @@ import os
 from datasets import load_dataset
 from transformers import AutoTokenizer, DataCollatorForLanguageModeling, AutoModelForCausalLM, Trainer, TrainingArguments
 
-# Define the path to the JSONL file and the model directory
+# Define the path to the JSONL file
 data_file = "mbpp.jsonl"
-model_local_dir = "Salesforce_codegen_350M_mono"  # Local model directory name
-
-# Determine model source
-model_name = "Salesforce/codegen-350M-mono"
-if os.path.exists(model_local_dir):
-    model_name = model_local_dir  # Use the local directory if it exists
 
 # Load tokenizer
+model_name = "Salesforce/codegen-350M-mono"  # Updated to use the specific model
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Add a padding token to the tokenizer if not already present
